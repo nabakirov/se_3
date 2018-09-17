@@ -1,0 +1,68 @@
+--CREATE DATABASE University
+--GO
+
+USE University
+GO
+
+CREATE TABLE Regions (
+	id TINYINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE Nationalities(
+	id SMALLINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE Faculties(
+	id TINYINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL UNIQUE
+);
+
+CREATE TABLE Specialities(
+	id SMALLINT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL UNIQUE,
+	faculty_id TINYINT NOT NULL,
+
+	CONSTRAINT fk_spec_faculty_id
+		FOREIGN KEY(faculty_id) 
+		REFERENCES Faculties(id)
+		ON UPDATE CASCADE	
+);
+
+CREATE TABLE Groups(
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL UNIQUE,
+	speciality_id SMALLINT NOT NULL,
+
+	CONSTRAINT fk_spec_group_id
+		FOREIGN KEY(speciality_id) 
+		REFERENCES Specialities(id)
+		ON UPDATE CASCADE
+);
+
+CREATE TABLE Students(
+	id INT IDENTITY(1,1) NOT NULL PRIMARY KEY,
+	name VARCHAR(50) NOT NULL,
+	birthday DATE NULL,
+	region_id TINYINT NULL,
+	nationality_id SMALLINT NULL,
+	group_id INT NOT NULL,
+
+	CONSTRAINT fk_stud_region_id
+		FOREIGN KEY(region_id) 
+		REFERENCES Regions(id)
+		ON DELETE SET NULL
+		ON UPDATE CASCADE,
+	CONSTRAINT fk_stud_nationality_id
+		FOREIGN KEY(nationality_id) 
+		REFERENCES Nationalities(id)
+		ON DELETE SET NULL
+		ON UPDATE CASCADE,
+	CONSTRAINT fk_stud_group_id
+		FOREIGN KEY(group_id) 
+		REFERENCES Groups(id)
+		ON UPDATE CASCADE
+	
+);
+GO
