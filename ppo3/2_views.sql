@@ -26,25 +26,37 @@ CREATE VIEW ListOfStudents AS
 GO
 
 
--- CREATE VIEW CountOfStudents AS
--- 	SELECT 
--- 		fac.name as Faculty, 
--- 		spec.name as Speciality, 
--- 		g.name as "Group",
--- 		COUNT(s.id) as count 
--- 	FROM Students as s
--- 	INNER JOIN Groups as g
--- 		ON s.group_id = g.id
--- 	INNER JOIN Specialities as spec
--- 		ON g.speciality_id = spec.id
--- 	INNER JOIN Faculties as fac
--- 		ON spec.faculty_id = fac.id
+CREATE VIEW CountOfStudents AS
+	SELECT 
+		fac.name as Faculty, 
+		spec.name as Speciality, 
+		g.name as "Group",
+		COUNT(s.id) as count 
+	FROM Students as s
+	INNER JOIN Groups as g
+		ON s.group_id = g.id
+	INNER JOIN Specialities as spec
+		ON g.speciality_id = spec.id
+	INNER JOIN Faculties as fac
+		ON spec.faculty_id = fac.id
 
--- 	GROUP BY fac.name, spec.name, g.name
--- GO
+	GROUP BY fac.name, spec.name, g.name
+GO
 
 CREATE VIEW CountByStudentsAges AS
 	SELECT Groupa, Age, count(Student) as Count
 	FROM ListOfStudents
 	GROUP BY Groupa, Age
 GO
+
+
+
+CREATE VIEW StudentWithGoodGrade AS
+	SELECT s.name 
+	FROM Student as s
+	INNER JOIN ProgresInStudy as pis
+		ON s.id = pis.student_id
+	WHERE pis.prize > 87
+	GROUP BY s.name
+
+

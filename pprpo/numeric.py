@@ -1,4 +1,5 @@
 import click
+from py_expression_eval import Parser
 
 
 class BaseException(Exception):
@@ -12,14 +13,7 @@ def cli():
 
 
 
-@click.command()
-def another():
-    print('another')
 
-
-
-
-from py_expression_eval import Parser
 
 class FormulaParser:
     exp = None
@@ -49,6 +43,44 @@ class FormulaParser:
         if not self.exp:
             raise Exception('cal .is_valid() first')
         return self.exp.evaluate({'x': x})
+
+
+
+
+
+@click.command()
+def newton():
+	def derivative(expression):
+		return expression
+
+	def newton_formulat(prev_x, f):
+		return prev_x - (f(prev_x) / derivative(prev_x))
+
+
+    print('Formula x=')
+    raw_f = input()
+    f = FormulaParser(raw_f)
+    try:
+        f.is_valid(True)
+    except Exception as e:
+        print(e)
+        return
+    print('x0: ')
+    try:
+        x0 = float(input())
+    except ValueError:
+        print('not a digit')
+        return
+    print('e: ')
+    try:
+        e = float(input())
+    except ValueError:
+        print('not a digit')
+        return
+    
+
+    print('another')
+
 
 
 
