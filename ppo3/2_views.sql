@@ -51,12 +51,16 @@ GO
 
 
 
-CREATE VIEW StudentWithGoodGrade AS
-	SELECT s.name 
-	FROM Student as s
-	INNER JOIN ProgresInStudy as pis
-		ON s.id = pis.student_id
-	WHERE pis.prize > 87
-	GROUP BY s.name
+-- CREATE VIEW StudentWithGoodGrade AS
+-- 	SELECT s.name 
+-- 	FROM Student as s
+-- 	INNER JOIN ProgresInStudy as pis
+-- 		ON s.id = pis.student_id
+-- 	WHERE pis.prize > 87
+-- 	GROUP BY s.name
 
 
+
+-- list of teachers ordered by count of subjects in one group 
+-- a teacher can teach max 4 subject in group
+-- select top trachers
