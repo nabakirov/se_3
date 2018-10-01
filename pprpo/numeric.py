@@ -12,9 +12,6 @@ def cli():
     pass
 
 
-
-
-
 class FormulaParser:
     exp = None
     raw = None
@@ -38,30 +35,30 @@ class FormulaParser:
         self.exp = exp
         return True
 
-
     def __call__(self, x):
         if not self.exp:
             raise Exception('cal .is_valid() first')
         return self.exp.evaluate({'x': x})
 
 
-
+def newton_formula(prev_x, formula, derivative):
+    return prev_x - (formula(prev_x) / derivative(prev_x))
 
 
 @click.command()
 def newton():
-	def derivative(expression):
-		return expression
-
-	def newton_formulat(prev_x, f):
-		return prev_x - (f(prev_x) / derivative(prev_x))
-
-
-    print('Formula x=')
+    print('Formula f=')
     raw_f = input()
     f = FormulaParser(raw_f)
     try:
         f.is_valid(True)
+    except Exception as e:
+        print(e)
+        return
+    print('derivative f`()=: ')
+    derivative = FormulaParser(input())
+    try:
+        derivative.is_valid(True)
     except Exception as e:
         print(e)
         return
@@ -71,15 +68,31 @@ def newton():
     except ValueError:
         print('not a digit')
         return
+
     print('e: ')
     try:
         e = float(input())
     except ValueError:
         print('not a digit')
         return
-    
 
-    print('another')
+    prev_x = x0
+    calced_e = 99
+    x = None
+    loop = 0
+    while 1:
+        loop += 1
+        if calced_e < e:
+            break
+        x = newton_formula(prev_x, f, derivative)
+
+        calced_e = abs(x - prev_x)
+        prev_x = x
+
+    print('n=', loop)
+    print('x =', x)
+    print('e=', calced_e)
+    return x
 
 
 
@@ -150,7 +163,7 @@ def secant():
 
 
 cli.add_command(secant)
-cli.add_command(another)
+cli.add_command(newton)
 
 if __name__ == '__main__':
     cli()
