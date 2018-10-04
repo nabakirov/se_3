@@ -1,5 +1,5 @@
--- CREATE DATABASE University
--- GO
+CREATE DATABASE University
+GO
 
 USE University
 GO

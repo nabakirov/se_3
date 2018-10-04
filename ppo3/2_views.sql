@@ -51,16 +51,25 @@ GO
 
 
 
--- CREATE VIEW StudentWithGoodGrade AS
--- 	SELECT s.name 
--- 	FROM Student as s
--- 	INNER JOIN ProgresInStudy as pis
--- 		ON s.id = pis.student_id
--- 	WHERE pis.prize > 87
--- 	GROUP BY s.name
+CREATE VIEW StudentWithGoodGrade AS
+	SELECT s.name 
+	FROM Student as s
+	INNER JOIN ProgresInStudy as pis
+		ON s.id = pis.student_id
+	WHERE pis.prize > 87
+	GROUP BY s.name
 
+GO
 
-
--- list of teachers ordered by count of subjects in one group 
--- a teacher can teach max 4 subject in group
--- select top trachers
+CREATE VIEW TeachersTop AS
+	SELECT t.name AS teacher, g.name AS [group], COUNT(s.name) AS subjects
+	FROM  dbo.Teachers AS t 
+	INNER JOIN dbo.Lectures AS l 
+		ON t.id = l.teacher_id 
+	INNER JOIN dbo.Groups AS g 
+		ON l.group_id = g.id 
+	INNER JOIN dbo.Subjects AS s 
+		ON l.subject_id = s.id
+	GROUP BY t.name, g.name
+	ORDER BY subjects DESC
+	
