@@ -54,9 +54,81 @@ LIBRARY_DIGIT = {
 24: 'y',
 25: 'z'
 }
+n = len(LIBRARY_DIGIT)
 
 
-n = 25
+import click
+
+
+@click.group()
+def cli():
+    pass
+
+
+def nod(a, b):
+	c = max(a, b)
+	r = 0
+	for i in range(1, c):
+		if a % i == 0 and b % i == 0:
+			r = i
+	return r
+
+
+def multiplication_key(key, n):
+	for i in range(1, n):
+		if key * i % n == 1:
+			return i
+	return None
+
+def addition_key(key, n):
+	return n - key % n 
+
+
+@click.command()
+def affine_encode():
+	print("text to decode")
+	rawstring = input()
+	print("multiplication key")
+	key1 = int(input())
+	if nod(key1, n) != 1:
+		print("multiplication key must be coprime")
+		return
+	print("addition key")
+	key2 = int(input())
+	if not (0 < key2 <= n):
+		print("addition key must be 0 < key <= {}".format(n))
+		return
+	m_key = multiplication_key(key1, n)
+	a_key = addition_key(key2, n)
+	raw_array = rawstring.lower()
+	encrypted = []
+	for letter in raw_array:
+		w = key1 * LIBRARY_LETTER[letter] + key2
+		w = w if w <= n else w % n
+		encrypted.append(LIBRARY_DIGIT[w])
+	print()
+	print("encoded: ", ''.join([k for k in encrypted]))
+	print('reverse multiplication key: ', m_key)
+	print('reverse addition key: ', a_key)
+	print()
+
+
+@click.command()
+def affine_decode():
+	print("text to decode")
+	rawstring = input()
+	print("multiplication key")
+	key1 = int(input())
+	print("addition key")
+	key2 = int(input())
+	raw_array = rawstring.lower()
+	encrypted = []
+	for letter in raw_array:
+		w = key1 * (LIBRARY_LETTER[letter] + key2)
+		w = w if w <= n else w % n
+		encrypted.append(LIBRARY_DIGIT[w])
+	print(''.join([k for k in encrypted]))
+
 
 
 
@@ -72,7 +144,9 @@ def additivity(rawstring, key: int):
 	return ''.join([k for k in encrypted])
 
 
+cli.add_command(affine_decode)
+cli.add_command(affine_encode)
+
+
 if __name__ == '__main__':
-	rawstring = input()
-	key = int(input())
-	print(additivity(rawstring, key))
+	cli()
