@@ -17,32 +17,89 @@ class FormulaParser:
     raw = None
     parser = None
 
-    def __init__(self, raw: str):
+    def __init__(self, raw: str, vars=['x']):
         self.raw = raw
         self.parser = Parser()
+        self.variables = vars
 
     def is_valid(self, raise_exception=False):
         exp = self.parser.parse(self.raw)
         vars = exp.variables()
-        if len(vars) != 1:
+        if len(vars) != len(self.variables):
             if raise_exception:
-                raise Exception('must be only one variable "x"')
+                raise Exception('must be only {}'.format(', '.join([v for v in self.variables])))
             return False
-        if 'x' not in vars:
-            if raise_exception:
-                raise Exception('must be only one variable "x"')
-            return False
+        for v in self.variables:
+            if v not in vars:
+                if raise_exception:
+                    raise Exception('must be only one {}'.format(v))
+                return False
         self.exp = exp
         return True
 
-    def __call__(self, x):
+    def __call__(self, **kwargs):
         if not self.exp:
             raise Exception('cal .is_valid() first')
-        return self.exp.evaluate({'x': x})
+        return self.exp.evaluate(kwargs)
+
+import sys
+def input_digit():
+    a = input()
+    try:
+        a = float(a)
+    except:
+        print('not a digit')
+        sys.exit(0)
+    else:
+        return a
+
+
+
+@click.command()
+def eiler():
+    def eiler_formula(y, h, f):
+        return y + h * f
+    print("Formula f=")
+    f = FormulaParser(input(), vars=['x', 'y', 'a', 'k'])
+    try:
+        f.is_valid(True)
+    except Exception as e:
+        print(e)
+        return
+    print('x0=')
+    x0 = input_digit()
+    print('y(0)=')
+    y0 = input_digit()
+    print('max x=')
+    max_x = input_digit()
+    print('a=')
+    a = input_digit()
+    print('k=')
+    k = input_digit()
+    print('h=')
+    h = input_digit()
+
+    x = x0
+    y = y0
+    i = 0
+    while x <= max_x:
+        i += 1
+        x += h
+
+        print('x{}='.format(i), x)
+        calced = f(a=a, x=x, y=y, k=k)
+        y = eiler_formula(y=y, h=h, f=calced)
+        print('y{}='.format(i), y, '\n')
+
+
+
+
+
+
 
 
 def newton_formula(prev_x, formula, derivative):
-    return prev_x - (formula(prev_x) / derivative(prev_x))
+    return prev_x - (formula(x=prev_x) / derivative(x=prev_x))
 
 
 @click.command()
@@ -99,7 +156,7 @@ def newton():
 
 
 def secant_formula(x0, x, f):
-    return (x0 * f(x) - x * f(x0)) / (f(x) - f(x0))
+    return (x0 * f(x=x) - x * f(x=x0)) / (f(x=x) - f(x=x0))
 
 
 
@@ -135,8 +192,8 @@ def secant():
         return
 
 
-    fx0 = f(x0)
-    fx1 = f(x1)
+    fx0 = f(x=x0)
+    fx1 = f(x=x1)
     calc_e = abs(fx1 - fx0)
     # prev_f = fx1
     calc_e = 99
@@ -149,7 +206,7 @@ def secant():
         if calc_e <= e:
             break
         x = secant_formula(x0, x, f)
-        fx = f(x)
+        fx = f(x=x)
         calc_e = abs(fx - _fx)
         _fx = fx
 
@@ -164,6 +221,7 @@ def secant():
 
 cli.add_command(secant)
 cli.add_command(newton)
+cli.add_command(eiler)
 
 if __name__ == '__main__':
     cli()
