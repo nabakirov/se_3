@@ -73,3 +73,21 @@ CREATE VIEW TeachersTop AS
 	GROUP BY t.name, g.name
 	ORDER BY subjects DESC
 	
+CREATE VIEW ProgresInStudyView AS
+	SELECT pis.id, student.name as student, sub.name as [subject], pis.term, pis.prize FROM ProgressInStudy as pis
+	INNER JOIN Students as student
+	on pis.student_id = student.id
+	inner join subjects as sub
+	on pis.subject_id = sub.id
+
+
+create view LecturesView as 
+	select t.name as teacher, s.name as [subject], g.name as [group] from Lectures as l
+	inner join teachers as t
+	on l.teacher_id = t.id
+	inner join subjects as s
+	on l.subject_id = s.id
+	inner join groups as g
+	on l.group_id = g.id
+
+	
