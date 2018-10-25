@@ -1,6 +1,7 @@
 
-def f(X):
-    return round(-0.04 * X ** 3 + X ** 2 + X -1, 4)
+def f(x):
+    return round(0.01 * x ** 3 + x ** 2 + 2*x -2, 4)
+    # return round(-0.04 * X ** 3 + X ** 2 + X -1, 4)
 
 
 
@@ -13,7 +14,7 @@ def bisection(a, b, tol, k_max, file=None):
 
     sign = lambda x: x > 0
 
-    print(f"Iteration 0")
+    print(f"Iteration 0\n")
     print(f"a = {a}\n"\
           f"b = {b}\n"\
           f"tol = {tol}\n"\
@@ -55,11 +56,11 @@ f'''Results:
 
 
 if __name__ == '__main__':
-    a = -1.6
-    b = 0.6
+    a = -2
+    b = 0.8
     k_max = 6
     tollerance = 0.01
-    filename = './abakirov_bisection.txt'
+    filename = './atai_bisection.txt'
     with open(filename, 'w+') as file:
         bisection(a, b, tollerance, k_max, file)
 
