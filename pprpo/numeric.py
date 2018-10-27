@@ -54,6 +54,27 @@ def input_digit():
         return a
 
 
+# def iteration():
+#     f_count = input_digit()
+#     funcs = {}
+#     variables = {}
+#     accuracy = {}
+#     accuracy_passes = {}
+#     for i in range(0, f_count):
+#         funcs[i] = FormulaParser(input(), vars=['x'])
+#         print("x0=".format(i))
+#         variables[i] = input_digit()
+#     print("e=")
+#     e = input_digit()
+#     i = 0
+#     while 1:
+        
+        
+
+
+
+
+
 
 @click.command()
 def eiler():
@@ -138,13 +159,14 @@ def newton():
     x = None
     loop = 0
     while 1:
-        loop += 1
         if calced_e < e:
             break
         x = newton_formula(prev_x, f, derivative)
 
         calced_e = abs(x - prev_x)
         prev_x = x
+
+        loop += 1
 
     print('n=', loop)
     print('x =', x)
@@ -217,11 +239,85 @@ def secant():
     print('e=', calc_e)
     return x
 
+def _k1_3(h, f, x, y, **kwargs):
+    return h * f(**{**kwargs, "x":x, "y":y})
+
+def _k2_3(h, f, x, y, k1, **kwargs):
+    return h * f(**{**kwargs, "x": x + 1/2 * h, "y": y + 1/2 * k1})
+
+def _k3_3(h, f, x, y, k1, k2, **kwargs):
+    return h * f(**{**kwargs, "x": x + h, "y": y - k1 + 2 * k2})
+
+def _kut_3(x, y, h, f, **kwargs):
+    k1 = _k1_3(h, f, x, y, **kwargs)
+    k2 = _k2_3(h, f, x, y, k1, **kwargs)
+    k3 = _k3_3(h, f, x, y, k1, k2, **kwargs)
+    return y + 1/6 * (k1 + 4 * k2 + k3), k1, k2, k3
+
+
+def _k3_4(h, f, x, y, k2, **kwargs):
+    return h * f(**{**kwargs, "x": x + 1/2 * h, "y": y + 1/2 * k2})
+
+def _k4_4(h, f, x, y, k3, **kwargs):
+    return h * f(**{**kwargs, "x": x + h, "y": y + k3})
+
+def _kut_4(x, y, h, f, **kwargs):
+    k1 = _k1_3(h, f, x, y, **kwargs)
+    k2 = _k2_3(h, f, x, y, k1, **kwargs)
+    k3 = _k3_4(h, f, x, y, k2, **kwargs)
+    k4 = _k4_4(h, f, x, y, k3, **kwargs)
+    return y + 1/6 * (k1 + 2 * k2 + k3 + k4), k1, k2, k3
+
+
+def kut_(kut):
+    print('Formula f=')
+    raw_f = input()
+    print('valiables')
+    variables = [v.strip() for v in input().split()]
+    f = FormulaParser(raw_f, vars=variables)
+    try:
+        f.is_valid(True)
+    except Exception as e:
+        print(e)
+        return
+    vars = {}
+    for v in variables + ['max_x', 'h']:
+        print("{}=".format(v))
+        vars[v] = input_digit()
+    
+
+    x = vars.pop('x')
+    y = vars.pop('y')
+    max_x = vars.pop('max_x')
+    h = vars.pop('h')
+
+    i = 0
+    while x <= max_x:
+        i += 1
+        x += h
+
+        y, k1, k2, k3 = kut(x, y, h, f, **vars)
+
+        print('''x{i}={x}\ny{i}={y}\n
+                    \tk1={k1}\n
+                    \tk2={k2}\n
+                    \tk3={k3}\n'''.format(i=i, x=x, y=y, k1=k1, k2=k2, k3=k3))
+    
+    
+@click.command()
+def kut3():
+    kut_(_kut_3)
+
+@click.command()
+def kut4():
+    kut_(_kut_4)
 
 
 cli.add_command(secant)
 cli.add_command(newton)
 cli.add_command(eiler)
+cli.add_command(kut3)
+cli.add_command(kut4)
 
 if __name__ == '__main__':
     cli()
