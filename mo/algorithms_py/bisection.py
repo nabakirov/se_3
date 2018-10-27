@@ -1,6 +1,6 @@
 
 def f(x):
-    return round(-20.04 * x ** 3 + x ** 2 + 2*x -1, 4)
+    return round(0.01 * x ** 3 + x ** 2 - 4 * x - 4, 4)
     # return round(-0.04 * X ** 3 + X ** 2 + X -1, 4)
 
 
@@ -60,7 +60,7 @@ if __name__ == '__main__':
     b = 0.8
     k_max = 6
     tollerance = 0.01
-    filename = './nurlan_bisection.txt'
+    filename = './0_bisection.txt'
     with open(filename, 'w+') as file:
         bisection(a, b, tollerance, k_max, file)
 

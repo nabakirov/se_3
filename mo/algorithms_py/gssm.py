@@ -1,6 +1,6 @@
 
 def f(x):
-    return round(-0.04 * x ** 3 + x ** 2 + x -1, 4)
+    return round(0.01 * x ** 3 + x ** 2 - 9 * x - 9, 4)
 
 a = -10
 b = 3
@@ -8,7 +8,7 @@ tol = 0.1
 k_max = 6
 
 import sys
-sys.stdout = open("./iterations/nurs2_gssm.txt", "w+")
+sys.stdout = open("./iterations/_gssm_max.txt", "w+")
 import math
 
 def gssm(a=a, b=b, tol=tol, k_max=k_max):
@@ -19,10 +19,9 @@ def gssm(a=a, b=b, tol=tol, k_max=k_max):
 	f2 = f(x2)
 	k = 0
 	print(f"Iteration {k}\n"\
-		  f"\tf(x) = -0.04 * X ^ 3 + X ^ 2 + X - 1\n"\
 		  f"\ta = {a}\n"\
 		  f"\tb = {b}\n"\
-		  f"\tr = (5 ^ (1/2)) / 2 = {r}\n"\
+		  f"\tr = (5 ^ (1/2) - 1) / 2 = {r}\n"\
 		  f"\tx1 = a + (1-r) * (b-a) = {x1}\n"\
 		  f"\tf1 = f(x1) = {f1}\n"\
 		  f"\tx2 = a + r * (b-a) = {x2}\n"\
@@ -33,9 +32,9 @@ def gssm(a=a, b=b, tol=tol, k_max=k_max):
 		k += 1
 		print(f"Iteration {k}\n"\
 			  f"1) k = {k}\n"\
-			  f"2) f1 > f2 -> {f1} > {f2}\t{f1 > f2}")
+			  f"2) f1 < f2 -> {f1} < {f2}\t{f1 < f2}")
 
-		if f1 > f2:
+		if f1 < f2:
 			a = x1
 			x1 = x2
 			f1 = f2

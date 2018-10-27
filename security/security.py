@@ -187,42 +187,76 @@ def hill():
     
 
 # createprocedureakcia
-# 30412 - 13402
+# 01234
+# 30412 - 
+
+
+# aoriceeatcearpdkeruc
+# 13402
+
+
 
 def shift_encode(rawstring: str, key: str):
+    v_key = []
+    for i in key:
+        i = int(i)
+        if i in v_key:
+            print(f"key must contain column indexes, found second {i}")
+            sys.exit(0)
+        v_key.append(i)
+    v_key = sorted(v_key)
+    for i in range(len(key)):
+        if i != v_key[i]:
+            print(f"missing column {i}")
+            sys.exit(0)
+    reverse_key = ''
+    for i, o in enumerate(key):
+        for j, k in enumerate(key):
+            if i == int(k):
+                reverse_key += str(j)
+    print(f"reverse key: {reverse_key}")
     key_l = len(key)
+    while len(rawstring) % key_l != 0: rawstring += '.'
     matrix = {}
     for i, letter in enumerate(rawstring):
         column = i % key_l
-        print(column)
         if column not in matrix:
             matrix[column] = ''
         matrix[column] += letter
     text = ''
-    print(matrix)
     for index in key:
         text += matrix[int(index)]
     return text
 
 def shift_decode(rawstring: str, key: str):
-    key_l = len(key)
-    matrix = {}
+    key_l = len(rawstring) / len(key)
+    matrix = [[] for i in range(len(key))]
     column = 0
     for i, letter in enumerate(rawstring):
         if i != 0 and i % key_l == 0:
             column += 1
-        print(column)
-        if column not in matrix:
-            matrix[column] = ''
-        matrix[column] += letter
-    print(matrix)
+        matrix[column].append(letter)
     text = ''
+    new_matrix = []
     for index in key:
-        text += matrix[int(index)]
+        index = int(index)
+        new_matrix.append(matrix[index])
+    for i, k in enumerate(key):
+        for column in new_matrix:
+            text += column[i]
     return text
 
 
-
+@click.command()
+def shift():
+    crypt_mode = input("[E]ncrypt|[D]ecrypt: ").lower()
+    message = input("Write the message: ").lower()
+    key = input("key: ").lower()
+    response = {
+        'e': shift_encode,
+        'd': shift_decode
+    }
+    print(response[crypt_mode](message, key))
 
 
 cli.add_command(affine_decode)
@@ -230,6 +264,7 @@ cli.add_command(affine_encode)
 cli.add_command(visioner_encode)
 cli.add_command(visioner_decode)
 cli.add_command(hill)
+cli.add_command(shift)
 
 
 if __name__ == '__main__':
