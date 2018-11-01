@@ -241,7 +241,7 @@ def shift_decode(rawstring: str, key: str):
     for index in key:
         index = int(index)
         new_matrix.append(matrix[index])
-    for i, k in enumerate(key):
+    for i, k in enumerate(new_matrix[0]):
         for column in new_matrix:
             text += column[i]
     return text
