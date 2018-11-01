@@ -19,7 +19,6 @@ def make_plus_one():
 	global clicked_cnt, btn
 	label.configure(text='clicked {} times'.format(clicked_cnt))
 	clicked_cnt += 1
-	x	
 	btn.grid(column=random.choice(range(0, 100)), row=random.choice(range(0, 100)))
 
 btn = tk.Button(window, text='+1', command=make_plus_one)
