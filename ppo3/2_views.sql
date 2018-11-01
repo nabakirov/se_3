@@ -1,6 +1,6 @@
 use university
 go
-
+/*
 CREATE VIEW ListOfStudents AS
 	SELECT 
 		fac.name as Faculty, 
@@ -53,14 +53,14 @@ GO
 
 CREATE VIEW StudentWithGoodGrade AS
 	SELECT s.name 
-	FROM Student as s
-	INNER JOIN ProgresInStudy as pis
+	FROM Students as s
+	INNER JOIN ProgressInStudy as pis
 		ON s.id = pis.student_id
 	WHERE pis.prize > 87
 	GROUP BY s.name
 
 GO
-
+*/
 CREATE VIEW TeachersTop AS
 	SELECT t.name AS teacher, g.name AS [group], COUNT(s.name) AS subjects
 	FROM  dbo.Teachers AS t 
@@ -71,15 +71,14 @@ CREATE VIEW TeachersTop AS
 	INNER JOIN dbo.Subjects AS s 
 		ON l.subject_id = s.id
 	GROUP BY t.name, g.name
-	ORDER BY subjects DESC
-	
+go
 CREATE VIEW ProgresInStudyView AS
 	SELECT pis.id, student.name as student, sub.name as [subject], pis.term, pis.prize FROM ProgressInStudy as pis
 	INNER JOIN Students as student
 	on pis.student_id = student.id
 	inner join subjects as sub
 	on pis.subject_id = sub.id
-
+go
 
 create view LecturesView as 
 	select t.name as teacher, s.name as [subject], g.name as [group] from Lectures as l
@@ -90,4 +89,4 @@ create view LecturesView as
 	inner join groups as g
 	on l.group_id = g.id
 
-	
+go

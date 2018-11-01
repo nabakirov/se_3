@@ -4,14 +4,14 @@ CREATE PROCEDURE SP_Speciality @faculty_id DEC(5,3) AS
 	INNER JOIN Specialities as s
 		ON s.faculty_id = f.id
 	WHERE f.id = @faculty_id
-
+go
 CREATE PROCEDURE SP_GROUPS @speciality_id DEC(5,3) AS
 	SELECT g.*
 	FROM Groups as g
 	INNER JOIN Specialities as s
 		ON g.speciality_id = s.id
 	WHERE s.id = @speciality_id
-
+go
 CREATE PROCEDURE SP_Students @group_id DEC(5,3) AS
 	SELECT s.*
 	FROM Students as s
@@ -19,3 +19,4 @@ CREATE PROCEDURE SP_Students @group_id DEC(5,3) AS
 		ON s.group_id = g.id
 	WHERE g.id = @group_id
 
+go
