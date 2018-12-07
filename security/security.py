@@ -193,8 +193,13 @@ def hill():
 
 # aoriceeatcearpdkeruc
 # 13402
-
-
+# def reverse_key(key):
+#     reverse_key = ''
+#     for i, o in enumerate(key):
+#         for j, k in enumerate(key):
+#             if i == int(k):
+#                 reverse_key += str(j)
+#     return reverse_key
 
 def shift_encode(rawstring: str, key: str):
     v_key = []

@@ -1,15 +1,11 @@
 
 def f(x):
-    return round(0.01 * x ** 3 + x ** 2 - 4 * x - 4, 4)
-    # return round(-0.04 * X ** 3 + X ** 2 + X -1, 4)
+    # return round(0.01 * x ** 3 + x ** 2 - 4 * x - 4, 4)
+    return round(-0.04 * x ** 3 + x ** 2 + x -1, 4)
 
 
 
-def bisection(a, b, tol, k_max, file=None):
-    if file:
-        print = file.write
-    else:
-        pass
+def bisection(a, b, tol, k_max):
     Fa, Fb = f(a), f(b)
 
     sign = lambda x: x > 0
@@ -52,17 +48,16 @@ f'''Results:
     b = {b}
     f(a) = {Fa}
     f(b) = {Fb}
-    k = {k}''')
+    k = {k}
+    m = {m}''')
 
 
 if __name__ == '__main__':
-    a = -2
-    b = 0.8
+    a = -1.6
+    b = 0.6
     k_max = 6
     tollerance = 0.01
-    filename = './0_bisection.txt'
-    with open(filename, 'w+') as file:
-        bisection(a, b, tollerance, k_max, file)
+    bisection(a, b, tollerance, k_max)
 
 
 

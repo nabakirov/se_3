@@ -1,12 +1,12 @@
 
+import sys
+sys.stdout = open("./iterations/_gssm_max.txt", "w+")
 
 def F(X):
 	return round(-0.04 * X ** 3 + X ** 2 + X -1, 4)
 
 
-def esm_min(H, X0, tollerance, file=None, max_k=7):
-	if file:
-		print = file.write
+def esm_min(H, X0, tollerance, max_k=7):
 	k = 0
 	YF0 = F(X0)
 	X1 = round(X0 + H, 4) 
@@ -73,9 +73,7 @@ if __name__ == '__main__':
 	X0 = -3
 	max_k = 6
 	tollerance = 0.01
-	filename = './abakirov_esm_min.txt'
-	with open(filename, 'w+') as file:
-		esm_min(H, X0, tollerance, file, max_k)
+	esm_min(H, X0, tollerance, file, max_k)
 		# esm_max(H, X0, tollerance, file, max_k)
 
 

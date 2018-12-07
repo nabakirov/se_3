@@ -2,3 +2,4 @@
 *.txt
 .vs
 .*
+/java/db/nbproject/private/
