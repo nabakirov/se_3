@@ -93,7 +93,7 @@ create table sale(
     id int identity(0,1) not null primary key,
     product_id int not null,
     quantity float not null,
-    summ float not null,
+    summ float null,
     [time] datetime not null,
     employee_id int not null,
 
@@ -119,5 +119,33 @@ create table production(
         foreign key(employee_id)
         references employee(id)
 );
+
+
+create table credit (
+	id int identity(1,1) not null primary key,
+	bank nvarchar(50) not null,
+	date_of_issue date null,
+	fine real null,
+	[percent] real null,
+	[sum] real null,
+	[year] int null,
+	redeemed real null
+);
+
+
+create table repayment (
+	id int identity(1,1) not null primary key,
+	bank int not null,
+	payment_date date,
+	sum_all real,
+	payment_sum real,
+	[percents] real,
+	fine real,
+	CONSTRAINT fk_bank_credit
+		FOREIGN KEY(bank) 
+		REFERENCES credit(id)
+);
+	
+
 
 go

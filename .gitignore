@@ -3,3 +3,8 @@
 .vs
 .*
 /java/db/nbproject/private/
+/java/duo/nbproject/private/
+/java/duo/build/
+/java/db/build/
+/java/TCP_UDP/nbproject/private/
+/java/TCP_UDP/build/

@@ -1,6 +1,6 @@
 
 import sys
-sys.stdout = open("./iterations/_gssm_max.txt", "w+")
+sys.stdout = open("./_gssm_max.txt", "w+")
 
 def F(X):
 	return round(-0.04 * X ** 3 + X ** 2 + X -1, 4)
@@ -73,7 +73,7 @@ if __name__ == '__main__':
 	X0 = -3
 	max_k = 6
 	tollerance = 0.01
-	esm_min(H, X0, tollerance, file, max_k)
+	esm_min(H, X0, tollerance, max_k)
 		# esm_max(H, X0, tollerance, file, max_k)
 
 
